@@ -1,0 +1,84 @@
+.about-page {
+  max-width: 100%;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.about-content h1 {
+  font-size: 36px;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.about-description p {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.about-features {
+  background-color: var(--secondary-color);
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 40px;
+}
+
+.about-features h2 {
+  font-size: 24px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.about-features ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.about-features li {
+  margin-bottom: 10px;
+  padding-left: 25px;
+  position: relative;
+}
+
+.about-features li::before {
+  content: '✓';
+  color: var(--accent-color);
+  position: absolute;
+  left: 0;
+}
+
+.cta-section {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.cta-section h2 {
+  font-size: 28px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.cta-section p {
+  margin-bottom: 30px;
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #c0aee0;
+}
