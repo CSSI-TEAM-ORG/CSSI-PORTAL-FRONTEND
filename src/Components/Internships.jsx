@@ -1,4 +1,4 @@
-import React from 'react';
+import {useEffect,useState} from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Internships.css';
 
@@ -66,6 +66,28 @@ const internships = [
 ];
 
 export default function Internships() {
+  const [data,setData]=useState(null);
+  useEffect(() => {
+    // Fetch data from the backend API
+    fetch('http://localhost:5000/ngodata')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data)
+        setData(data);
+        // setLoading(false);
+      })
+      .catch((error) => {
+        // setError(error.message);
+        // setLoading(false);
+        console.log('error')
+      });
+  }, []);
+  console.log(data)
   return (
     <div className="internships-page">
       <header className="header">
@@ -83,17 +105,17 @@ export default function Internships() {
       <main className="internships-content">
         <h1>Available NGO Internships</h1>
         <div className="internships-grid">
-          {internships.map((internship) => (
+          {data?data.map((internship) => (
             <div key={internship.id} className="internship-card">
               <h2>{internship.name}</h2>
-              <p><strong>Register No:</strong> {internship.registerNo}</p>
+              <p><strong>Name:</strong> {internship.name}</p>
               <p><strong>Capacity:</strong> {internship.capacity} interns</p>
               <p><strong>Location:</strong> {internship.city}, {internship.state}</p>
               <p><strong>Address:</strong> {internship.address}</p>
-              <p className="description">{internship.description}</p>
+              {/* <p className="description">{internship.description}</p> */}
               <button className="apply-button">Apply Now</button>
             </div>
-          ))}
+          )):<div>none</div>}
         </div>
       </main>
 
