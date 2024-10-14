@@ -100,26 +100,6 @@
   margin-bottom: 1rem;
 }
 
-.auth-info {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-}
-
-.auth-info h3 {
-  margin-bottom: 0.5rem;
-  color: var(--text-color);
-}
-
-.auth-info p {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
-  color: var(--text-color);
-}
-
 @media (max-width: 480px) {
   .auth-card,
   .auth-info {
