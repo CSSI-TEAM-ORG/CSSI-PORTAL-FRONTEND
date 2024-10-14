@@ -1,31 +1,75 @@
-import React, { useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
-import '../Styles/Auth.css';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../Styles/Auth.css";
 
 export default function Signup() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('student');
-  const [error, setError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("student");
+  const [error, setError] = useState("");
+  const [department, setDepartment] = useState("");
+  const [rollno, setRollNo] = useState("");
+  const [confirm_password, setConfirm_Password] = useState("");
+
   const navigate = useNavigate();
+
+  async function sendposturl() {
+    const url = "http://localhost:5000/auth/register";
+    const data = {
+      name,
+      rollno,
+      department,
+      email,
+      password,
+      confirm_password,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const jsonresponse = await response.json();
+      if (response.ok) {
+        console.log("Success: ", jsonresponse);
+        alert("Please verify your Email!");
+        navigate("/login");
+      } else {
+        console.log("Error: ", jsonresponse);
+        setError(jsonresponse.message || "Something went wrong");
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      setError("An error occurred. Please try again later.");
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
-    // Basic email validation for PDEU domain
-    if (!email.endsWith('@pdeu.ac.in')) {
-      setError('Please use a valid PDEU email address');
+    if (!email.endsWith("pdpu.ac.in")) {
+      setError("Please use a valid PDEU email address");
       return;
     }
 
-    // In a real app, you would send this data to your backend
-    console.log('Signup submitted', { name, email, password, userType });
-    
-    // Simulate successful signup
-    alert(`${userType} account created successfully!`);
-    navigate('/login'); // Redirect to login page after signup
+    const strongPasswordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (password !== confirm_password) {
+      setError("Passwords do not match");
+      return;
+    }
+    if (!strongPasswordPattern.test(password)) {
+      setError(
+        "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
+      );
+      return;
+    }
+    sendposturl();
   };
 
   return (
@@ -42,7 +86,6 @@ export default function Signup() {
               className="auth-select"
             >
               <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
             </select>
           </div>
           <div className="form-group">
@@ -56,6 +99,26 @@ export default function Signup() {
             />
           </div>
           <div className="form-group">
+            <label htmlFor="RollNo">Roll Number:</label>
+            <input
+              type="text"
+              id="RollNo"
+              value={rollno}
+              onChange={(e) => setRollNo(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="department">Department</label>
+            <input
+              type="Text"
+              id="department"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
             <label htmlFor="email">PDEU Email</label>
             <input
               type="email"
@@ -63,7 +126,7 @@ export default function Signup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="username@pdeu.ac.in"
+              placeholder="ends with pdpu.ac.in"
             />
           </div>
           <div className="form-group">
@@ -76,13 +139,28 @@ export default function Signup() {
               required
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="Confpassword">Confirm Password</label>
+            <input
+              type="password"
+              id="Confpassword"
+              value={confirm_password}
+              onChange={(e) => setConfirm_Password(e.target.value)}
+              required
+            />
+          </div>
+
           {error && <p className="error-message">{error}</p>}
-          <button type="submit" className="auth-button">Sign Up</button>
+          <button type="submit" className="auth-button">
+            Sign Up
+          </button>
         </form>
         <p>
           Already have an account? <Link to="/login">Login</Link>
         </p>
-        <Link to="/" className="back-link">Back to Home</Link>
+        <Link to="/" className="back-link">
+          Back to Home
+        </Link>
       </div>
     </div>
   );
