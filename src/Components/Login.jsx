@@ -2,17 +2,6 @@ import React, { useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import '../Styles/Auth.css';
 
-const dummyUsers = {
-  students: [
-    { email: 'student1@pdeu.ac.in', password: 'student123' },
-    { email: 'student2@pdeu.ac.in', password: 'student456' }
-  ],
-  teachers: [
-    { email: 'teacher1@pdeu.ac.in', password: 'teacher123' },
-    { email: 'teacher2@pdeu.ac.in', password: 'teacher456' }
-  ]
-};
-
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,27 +9,44 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  async function sendposturl(e) {
     e.preventDefault();
-    setError('');
+    const url = "http://localhost:5000/auth/login";
+    const data = {
+      email,
+      password,
+      role:userType,
+    };
 
-    const users = userType === 'student' ? dummyUsers.students : dummyUsers.teachers;
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (user) {
-      console.log(`${userType} logged in successfully`);
-      // In a real app, you would set authentication state here
-      navigate('/'); // Redirect to home page after successful login
-    } else {
-      setError('Invalid email or password');
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+      const jsonresponse = await response.json();
+      if (response.ok) {
+        console.log("Success: ", jsonresponse);
+        alert("You are now Logged in!");
+        navigate("/");
+      } else {
+        console.log("Error: ", jsonresponse);
+        setError(jsonresponse.message || "Something went wrong");
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      setError("An error occurred. Please try again later.");
     }
-  };
+  }
 
   return (
     <div className="auth-container">
       <div className="auth-card">
         <h2>Login to PDEU Internships</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={sendposturl}>
           <div className="form-group">
             <label htmlFor="userType">I am a:</label>
             <select
@@ -51,6 +57,7 @@ export default function Login() {
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
+              <option value="teacher">NGO</option>
             </select>
           </div>
           <div className="form-group">
@@ -80,13 +87,6 @@ export default function Login() {
           Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
         <Link to="/" className="back-link">Back to Home</Link>
-      </div>
-      <div className="auth-info">
-        <h3>Dummy Login Credentials:</h3>
-        <p>Student 1: student1@pdeu.ac.in / student123</p>
-        <p>Student 2: student2@pdeu.ac.in / student456</p>
-        <p>Teacher 1: teacher1@pdeu.ac.in / teacher123</p>
-        <p>Teacher 2: teacher2@pdeu.ac.in / teacher456</p>
       </div>
     </div>
   );

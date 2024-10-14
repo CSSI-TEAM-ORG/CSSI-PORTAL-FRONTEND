@@ -32,6 +32,7 @@ export default function Signup() {
           "Content-type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
       const jsonresponse = await response.json();
       if (response.ok) {
@@ -111,7 +112,7 @@ export default function Signup() {
           <div className="form-group">
             <label htmlFor="department">Department</label>
             <input
-              type="Text"
+              type="text"
               id="department"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
