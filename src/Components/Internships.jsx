@@ -1,93 +1,45 @@
-import {useEffect,useState} from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Styles/Internships.css';
 
-const internships = [
-  {
-    id: 1,
-    name: "Green Earth Initiative",
-    registerNo: "NGO001",
-    capacity: 5,
-    state: "Gujarat",
-    city: "Ahmedabad",
-    address: "123 Green Street, Navrangpura, Ahmedabad, Gujarat 380009",
-    description: "Join us in our mission to create a sustainable future through environmental conservation projects and community awareness programs."
-  },
-  {
-    id: 2,
-    name: "Educate for Tomorrow",
-    registerNo: "NGO002",
-    capacity: 3,
-    state: "Maharashtra",
-    city: "Mumbai",
-    address: "45 Knowledge Lane, Andheri West, Mumbai, Maharashtra 400053",
-    description: "Help us bridge the education gap by teaching underprivileged children and developing innovative learning materials."
-  },
-  {
-    id: 3,
-    name: "Health for All",
-    registerNo: "NGO003",
-    capacity: 4,
-    state: "Delhi",
-    city: "New Delhi",
-    address: "78 Wellness Road, Hauz Khas, New Delhi, Delhi 110016",
-    description: "Contribute to our healthcare initiatives by assisting in medical camps and health awareness campaigns in rural areas."
-  },
-  {
-    id: 4,
-    name: "Digital Empowerment Foundation",
-    registerNo: "NGO004",
-    capacity: 6,
-    state: "Karnataka",
-    city: "Bangalore",
-    address: "Tech Park, 3rd Floor, MG Road, Bangalore, Karnataka 560001",
-    description: "Help bridge the digital divide by teaching computer skills and developing e-learning content for underprivileged communities."
-  },
-  {
-    id: 5,
-    name: "Women's Empowerment Collective",
-    registerNo: "NGO005",
-    capacity: 4,
-    state: "Rajasthan",
-    city: "Jaipur",
-    address: "15 Shakti Nagar, Vaishali Nagar, Jaipur, Rajasthan 302021",
-    description: "Join our efforts to empower women through skill development workshops, legal aid, and entrepreneurship programs."
-  },
-  {
-    id: 6,
-    name: "Clean Water Initiative",
-    registerNo: "NGO006",
-    capacity: 3,
-    state: "Tamil Nadu",
-    city: "Chennai",
-    address: "Water House, 56 Marina Beach Road, Chennai, Tamil Nadu 600001",
-    description: "Participate in our projects to provide clean drinking water to rural communities and promote water conservation practices."
-  }
-];
-
 export default function Internships() {
-  const [data,setData]=useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();  
+
   useEffect(() => {
-    // Fetch data from the backend API
-    fetch('http://localhost:5000/ngodata')
+    fetch('http://localhost:5000/ngo/allData', {
+      method: 'GET',
+      credentials: 'include',  
+    })
       .then((response) => {
         if (!response.ok) {
+          if (response.status === 401) {  
+            navigate('/login');
+          }
           throw new Error('Failed to fetch data');
         }
         return response.json();
       })
       .then((data) => {
-        console.log(data)
         setData(data);
-        // setLoading(false);
+        setLoading(false);
       })
       .catch((error) => {
-        // setError(error.message);
-        // setLoading(false);
-        console.log('error')
+        setError(error.message);
+        setLoading(false);
       });
-  }, []);
-  console.log(data)
+  }, [navigate]);  
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="internships-page">
       <header className="header">
@@ -105,17 +57,21 @@ export default function Internships() {
       <main className="internships-content">
         <h1>Available NGO Internships</h1>
         <div className="internships-grid">
-          {data?data.map((internship) => (
-            <div key={internship.id} className="internship-card">
-              <h2>{internship.name}</h2>
-              <p><strong>Name:</strong> {internship.name}</p>
-              <p><strong>Capacity:</strong> {internship.capacity} interns</p>
-              <p><strong>Location:</strong> {internship.city}, {internship.state}</p>
-              <p><strong>Address:</strong> {internship.address}</p>
-              {/* <p className="description">{internship.description}</p> */}
-              <button className="apply-button">Apply Now</button>
-            </div>
-          )):<div>none</div>}
+          {data && data.length > 0 ? (
+            data.map((internship) => (
+              <div key={internship.id} className="internship-card">                
+                <h2>{internship.name}</h2>
+                <p><strong>Name:</strong> {internship.name}</p>
+                <p><strong>Capacity:</strong> {internship.capacity} interns</p>
+                <p><strong>Location:</strong> {internship.city}, {internship.state}</p>
+                <p><strong>Address:</strong> {internship.address}</p>
+                <p><strong>Email:</strong> {internship.email}</p>
+                <button className="apply-button">Apply Now</button>
+              </div>
+            ))
+          ) : (
+            <div>No internships available</div>
+          )}
         </div>
       </main>
 

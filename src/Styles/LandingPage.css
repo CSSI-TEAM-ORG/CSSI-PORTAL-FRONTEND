@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
-  --primary-color: #a0d2eb;
+  --primary-color: #2a79a1;
   --secondary-color: #e5eaf5;
   --accent-color: #723fd2;
   --background-color: #f8f9fa;
@@ -210,7 +210,7 @@ nav ul li a:hover {
 }
 
 .cta-section {
-  background-color: var(--primary-color);
+  background-color: #a0d2eb;
   color: var(--text-color);
   text-align: center;
   padding: 80px 5%;

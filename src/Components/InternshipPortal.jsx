@@ -29,7 +29,6 @@ export default function InternshipPortal() {
     if (featuresElement) {
       observer.observe(featuresElement);
     }
-    console.log("Cookies: ", document.cookie);
     const isUserLoggedIn = document.cookie.split(';').some((item) => item.trim().startsWith('authToken='));
     setIsLoggedIn(isUserLoggedIn);
 
