@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import "../Styles/Auth.css";
 
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm_password, setConfirm_Password] = useState("");
   const [userType, setUserType] = useState("student");
-  const [error, setError] = useState("");
   const [department, setDepartment] = useState("");
   const [rollno, setRollNo] = useState("");
-  const [confirm_password, setConfirm_Password] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -132,23 +135,39 @@ export default function Signup() {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="icon"
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </span>
+            </div>
           </div>
           <div className="form-group">
             <label htmlFor="Confpassword">Confirm Password</label>
-            <input
-              type="password"
-              id="Confpassword"
-              value={confirm_password}
-              onChange={(e) => setConfirm_Password(e.target.value)}
-              required
-            />
+            <div className="password-container">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="Confpassword"
+                value={confirm_password}
+                onChange={(e) => setConfirm_Password(e.target.value)}
+                required
+              />
+              <span
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="icon"
+              >
+                {showConfirmPassword ? <EyeOff /> : <Eye />}
+              </span>
+            </div>
           </div>
 
           {error && <p className="error-message">{error}</p>}

@@ -93,6 +93,16 @@
 .back-link:hover {
   text-decoration: underline;
 }
+.password-container {
+  display: flex;
+  align-items: center;
+}
+
+.password-container .icon {
+  cursor: pointer;
+  margin-left: -30px;
+}
+
 
 .error-message {
   color: #dc3545;

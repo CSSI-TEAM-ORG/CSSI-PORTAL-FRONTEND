@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
-import '../Styles/Auth.css';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
+import "../Styles/Auth.css";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('student');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("student");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   async function sendposturl(e) {
@@ -15,7 +17,7 @@ export default function Login() {
     const data = {
       email,
       password,
-      role:userType,
+      role: userType,
     };
 
     try {
@@ -57,7 +59,7 @@ export default function Login() {
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
-              <option value="teacher">NGO</option>
+              <option value="ngo">NGO</option>
             </select>
           </div>
           <div className="form-group">
@@ -72,21 +74,31 @@ export default function Login() {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="icon"
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </span>
+            </div>
           </div>
           {error && <p className="error-message">{error}</p>}
           <button type="submit" className="auth-button">Login</button>
         </form>
         <p>
-          Don't have an account? <Link to="/signup">Sign up</Link>
+          Don’t have an account? <Link to="/signup">Sign up</Link>
         </p>
-        <Link to="/" className="back-link">Back to Home</Link>
+        <Link to="/" className="back-link">
+          Back to Home
+        </Link>
       </div>
     </div>
   );
