@@ -217,6 +217,7 @@ nav ul li a:hover {
 }
 
 .cta-section h2 {
+  color:#0c0000 !important;
   font-size: 36px;
   margin-bottom: 20px;
 }
