@@ -1,7 +1,6 @@
-import React, { useEffect, useRef,useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Styles/LandingPage.css';
-
 
 export default function InternshipPortal() {
   const heroRef = useRef(null);
@@ -10,6 +9,9 @@ export default function InternshipPortal() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const heroElement = heroRef.current; 
+    const featuresElement = featuresRef.current; 
+  
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -20,32 +22,50 @@ export default function InternshipPortal() {
       },
       { threshold: 0.1 }
     );
-
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
+  
+    if (heroElement) {
+      observer.observe(heroElement);
     }
-
-    if (featuresRef.current) {
-      observer.observe(featuresRef.current);
+    if (featuresElement) {
+      observer.observe(featuresElement);
     }
-
-    // Simulating a logged-in state for demonstration
-    setIsLoggedIn(true);
+    const isUserLoggedIn = document.cookie.split(';').some((item) => item.trim().startsWith('authToken='));
+    setIsLoggedIn(isUserLoggedIn);
 
     return () => {
-      if (heroRef.current) {
-        observer.unobserve(heroRef.current);
+      if (heroElement) {
+        observer.unobserve(heroElement);
       }
-      if (featuresRef.current) {
-        observer.unobserve(featuresRef.current);
+      if (featuresElement) {
+        observer.unobserve(featuresElement);
       }
     };
-  }, []);
+  }, []);  
 
-  const handleLogout = () => {
-    // Implement logout logic here
+  const handleLogout = async(e) => {
+    e.preventDefault();
+    const url = "http://localhost:5000/auth/logout";
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        credentials: "include",
+      });
+      const jsonresponse = await response.json();
+      if (response.ok) {
+        console.log("Success: ", jsonresponse);
+        alert("You are now Logged out!");
+      } else {
+        console.log("Error: ", jsonresponse);
+        alert(jsonresponse.message || "Something went wrong");
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      alert("An error occurred. Please try again later.");
+    }
     setIsLoggedIn(false);
-    // Redirect to home page after logout
     navigate('/');
   };
 
