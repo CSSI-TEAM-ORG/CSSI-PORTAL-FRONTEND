@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import '../Styles/Contact.css';
 
-export default function Contact() {
+export default function Contact({loggedin,setloggedin}) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -21,6 +21,13 @@ export default function Contact() {
     setFormData({ name: '', email: '', message: '' });
   };
 
+  const handleLogout = () => {
+    // Implement logout logic here
+    setloggedin();
+    // Redirect to home page after logout
+    navigate('/');
+  };
+
   return (
     <div className="contact-page">
       <header className="header">
@@ -31,6 +38,17 @@ export default function Contact() {
             <li><Link to="/about">About</Link></li>
             <li><Link to="/internships">Internships</Link></li>
             <li><Link to="/contact">Contact</Link></li>
+            {loggedin ? (
+              <>
+                <li><Link to="/account" className="nav-button">My Account</Link></li>
+                <li><Link onClick={handleLogout} className="nav-button logout-button">Logout</Link></li>
+              </>
+            ) : (
+              <>
+                <li><Link to="/login" className="nav-button">Login</Link></li>
+                <li><Link to="/signup" className="nav-button">Sign Up</Link></li>
+              </>
+            )}
           </ul>
         </nav>
       </header>

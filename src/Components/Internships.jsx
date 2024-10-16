@@ -1,5 +1,5 @@
 import {useEffect,useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import '../Styles/Internships.css';
 
 const internships = [
@@ -65,8 +65,9 @@ const internships = [
   }
 ];
 
-export default function Internships() {
+export default function Internships({setloggedin,loggedin}) {
   const [data,setData]=useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     // Fetch data from the backend API
     fetch('http://localhost:5000/ngo/allData')
@@ -94,6 +95,13 @@ export default function Internships() {
       });
   }, []);
   console.log(data)
+
+  const handleLogout = () => {
+    // Implement logout logic here
+    setloggedin();
+    // Redirect to home page after logout
+    navigate('/');
+  };
   return (
     <div className="internships-page">
       <header className="header">
@@ -104,6 +112,17 @@ export default function Internships() {
             <li><Link to="/about">About</Link></li>
             <li><Link to="/internships">Internships</Link></li>
             <li><Link to="/contact">Contact</Link></li>
+            {loggedin ? (
+              <>
+                <li><Link to="/account" className="nav-button">My Account</Link></li>
+                <li><Link onClick={handleLogout} className="nav-button logout-button">Logout</Link></li>
+              </>
+            ) : (
+              <>
+                <li><Link to="/login" className="nav-button">Login</Link></li>
+                <li><Link to="/signup" className="nav-button">Sign Up</Link></li>
+              </>
+            )}
           </ul>
         </nav>
       </header>

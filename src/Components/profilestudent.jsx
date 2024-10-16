@@ -17,6 +17,7 @@ export default function Profilestudent({profupdate}){
           if (response.ok) {
             const userD = await response.json(); // use const to declare userData
             // userData=userD[0];
+            // console.log(userD)
             setUserData(userD[0])
             console.log('Data:', userData);
             setloading(false);

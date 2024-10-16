@@ -10,6 +10,7 @@ import Contact from './Components/Contact';
 import {useState,useEffect} from "react"
 import {jwtDecode} from "jwt-decode"
 function App() {
+  const [isLoggedin,setisloggedin]=useState(true);//update this to false when dealing with tokens initially
   const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -27,19 +28,22 @@ function App() {
   }, []);
   console.log("hithere")
   console.log(userData)
+  if(userData){setisloggedin(!isLoggedin)}
   const role=userData?userData.role:"student";
   return (
+    <>
     <Router>
       <Routes>
-        <Route path="/" element={<InternshipPortal />} />
+        <Route path="/" element={<InternshipPortal loggedin={isLoggedin} setloggedin={()=>{setisloggedin(!isLoggedin)}}/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/account" element={<AccountPage role={role}/>} />
-        <Route path="/about" element={<About />} />
-        <Route path="/internships" element={<Internships />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About loggedin={isLoggedin} setloggedin={()=>{setisloggedin(!isLoggedin)}}/>} />
+        <Route path="/internships" element={<Internships loggedin={isLoggedin} setloggedin={()=>{setisloggedin(!isLoggedin)}}/>} />
+        <Route path="/contact" element={<Contact loggedin={isLoggedin} setloggedin={()=>{setisloggedin(!isLoggedin)}}/>} />
       </Routes>
     </Router>
+    </>
   );
 }
 

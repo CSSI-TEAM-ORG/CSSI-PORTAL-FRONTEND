@@ -3,48 +3,12 @@ import { Link,useNavigate } from 'react-router-dom';
 import '../Styles/LandingPage.css';
 
 
-export default function InternshipPortal() {
-  const heroRef = useRef(null);
-  const featuresRef = useRef(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export default function InternshipPortal({loggedin,setloggedin}) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
-    }
-
-    if (featuresRef.current) {
-      observer.observe(featuresRef.current);
-    }
-
-    // Simulating a logged-in state for demonstration
-    setIsLoggedIn(true);
-
-    return () => {
-      if (heroRef.current) {
-        observer.unobserve(heroRef.current);
-      }
-      if (featuresRef.current) {
-        observer.unobserve(featuresRef.current);
-      }
-    };
-  }, []);
 
   const handleLogout = () => {
     // Implement logout logic here
-    setIsLoggedIn(false);
+    setloggedin();
     // Redirect to home page after logout
     navigate('/');
   };
@@ -59,7 +23,7 @@ export default function InternshipPortal() {
             <li><a href="/about">About</a></li>
             <li><a href="/internships">Internships</a></li>
             <li><a href="/contact">Contact</a></li>
-            {isLoggedIn ? (
+            {loggedin ? (
               <>
                 <li><Link to="/account" className="nav-button">My Account</Link></li>
                 <li><Link onClick={handleLogout} className="nav-button logout-button">Logout</Link></li>
@@ -75,7 +39,7 @@ export default function InternshipPortal() {
       </header>
 
       <main>
-        <section ref={heroRef} className="hero">
+        <section className="hero">
           <div className="hero-content">
             <h1>Empower Your Future with NGO Internships</h1>
             <p>Connect PDEU students with meaningful internship opportunities in the NGO sector</p>
@@ -83,7 +47,7 @@ export default function InternshipPortal() {
           </div>
         </section>
 
-        <section ref={featuresRef} className="features">
+        <section className="features">
           <h2>Why Choose Our Internship Portal?</h2>
           <div className="feature-grid">
             <div className="feature-card">

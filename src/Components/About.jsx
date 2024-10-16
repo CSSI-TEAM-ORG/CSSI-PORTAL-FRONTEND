@@ -1,8 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import '../Styles/About.css';
-
-export default function About() {
+export default function About({loggedin,setloggedin}) {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    // Implement logout logic here
+    setloggedin();
+    // Redirect to home page after logout
+    navigate('/');
+  };
   return (
     <div className="about-page">
       <header className="header">
@@ -13,6 +19,17 @@ export default function About() {
             <li><Link to="/about">About</Link></li>
             <li><Link to="/internships">Internships</Link></li>
             <li><Link to="/contact">Contact</Link></li>
+            {loggedin ? (
+              <>
+                <li><Link to="/account" className="nav-button">My Account</Link></li>
+                <li><Link onClick={handleLogout} className="nav-button logout-button">Logout</Link></li>
+              </>
+            ) : (
+              <>
+                <li><Link to="/login" className="nav-button">Login</Link></li>
+                <li><Link to="/signup" className="nav-button">Sign Up</Link></li>
+              </>
+            )}
           </ul>
         </nav>
       </header>
