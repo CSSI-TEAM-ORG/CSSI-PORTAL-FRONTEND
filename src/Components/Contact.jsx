@@ -6,6 +6,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    rollno: '',
     message: ''
   });
 
@@ -13,12 +14,37 @@ export default function Contact() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the form data to a server
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message. We will get back to you soon!');
-    setFormData({ name: '', email: '', message: '' });
+    
+    const url = "http://localhost:5000/admin/contact";
+    const data = {
+      name: formData.name,
+      rollno: formData.rollno,
+      email: formData.email,
+      message: formData.message,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const jsonresponse = await response.json();
+      if (response.ok) {
+        alert('Thank you for your message. We will get back to you soon!');
+        setFormData({ name: '',rollno:'', email: '', message: '' });
+      } else {
+        console.log("Error: ", jsonresponse);
+        alert(jsonresponse.message || "Something went wrong");
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      alert("An error occurred. Please try again later.");
+    }
   };
 
   return (
@@ -45,9 +71,20 @@ export default function Contact() {
                 <label htmlFor="name">Name</label>
                 <input
                   type="text"
-                  i d="name"
+                  id="name"
                   name="name"
                   value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="rollno">Roll Number</label>
+                <input
+                  type="text"
+                  id="rollno"
+                  name="rollno"
+                  value={formData.rollno}
                   onChange={handleChange}
                   required
                 />
