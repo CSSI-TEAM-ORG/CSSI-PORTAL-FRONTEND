@@ -9,17 +9,6 @@ export default function Internships() {
   const navigate = useNavigate();  
 
   useEffect(() => {
-    // Fetch data from the backend API
-    fetch('http://localhost:5000/ngo/allData')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch data', {
-            method: 'GET',
-            credentials: 'include', // This ensures cookies are sent
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
     fetch('http://localhost:5000/ngo/allData', {
       method: 'GET',
       credentials: 'include',  
