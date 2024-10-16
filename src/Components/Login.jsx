@@ -58,7 +58,7 @@ export default function Login() {
               className="auth-select"
             >
               <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
+              <option value="faculty">Faculty</option>
               <option value="ngo">NGO</option>
             </select>
           </div>
