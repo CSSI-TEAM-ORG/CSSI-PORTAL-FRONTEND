@@ -1,6 +1,6 @@
 .account-page {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 90px auto;
   padding: 2rem;
   background-color: var(--background-color);
   min-height: 100vh;
@@ -59,6 +59,26 @@
 
 .detail-value {
   color: var(--text-color);
+}
+
+/* New styles for the "Update Profile" button */
+.update-profile-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  margin-top: 2rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.update-profile-button:hover {
+  background-color: #c0aee0;
 }
 
 @media (min-width: 640px) {

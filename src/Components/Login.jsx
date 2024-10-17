@@ -14,6 +14,7 @@ export default function Login() {
   async function sendposturl(e) {
     e.preventDefault();
     const url = "http://localhost:5000/auth/login";
+    console.log(userType)
     const data = {
       email,
       password,

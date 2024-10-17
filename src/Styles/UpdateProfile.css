@@ -1,0 +1,55 @@
+.update-profile-page {
+    max-width: 700px;
+    margin: 90px auto;
+    padding: 2rem;
+    background-color: var(--background-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.update-profile-page h1 {
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+
+.update-profile-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.update-profile-form label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.update-profile-form input,
+.update-profile-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.update-profile-form textarea {
+    resize: vertical;
+}
+
+.update-profile-button {
+padding: 0.75rem 1.5rem;
+    background-color: var(--accent-color);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.update-profile-button:hover {
+    background-color: c0aee0;
+}  

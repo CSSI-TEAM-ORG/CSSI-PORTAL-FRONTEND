@@ -7,6 +7,7 @@ import AccountPage from './Components/AccountPage';
 import About from './Components/About';
 import Internships from './Components/Internships';
 import Contact from './Components/Contact';
+import UpdateProfile from './Components/UpdateProfile';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/internships" element={<Internships />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/updateprofile" element={<UpdateProfile />} />
       </Routes>
     </Router>
   );
