@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Navbar from './Navbar'
 import '../Styles/Internships.css';
 
 export default function Internships() {
@@ -42,17 +43,7 @@ export default function Internships() {
 
   return (
     <div className="internships-page">
-      <header className="header">
-        <div className="logo">PDEU Internships</div>
-        <nav>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/internships">Internships</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-          </ul>
-        </nav>
-      </header>
+      <Navbar />
 
       <main className="internships-content">
         <h1>Available NGO Internships</h1>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 import '../Styles/Contact.css';
 
 export default function Contact() {
@@ -49,17 +50,7 @@ export default function Contact() {
 
   return (
     <div className="contact-page">
-      <header className="header">
-        <div className="logo">PDEU Internships</div>
-        <nav>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/internships">Internships</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-          </ul>
-        </nav>
-      </header>
+      <Navbar />
 
       <main className="contact-content">
         <h1>Contact Us</h1>

@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 import '../Styles/LandingPage.css';
 
 export default function InternshipPortal() {
   const heroRef = useRef(null);
   const featuresRef = useRef(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const heroElement = heroRef.current; 
-    const featuresElement = featuresRef.current; 
-  
+    const heroElement = heroRef.current;
+    const featuresElement = featuresRef.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -22,15 +21,13 @@ export default function InternshipPortal() {
       },
       { threshold: 0.1 }
     );
-  
+
     if (heroElement) {
       observer.observe(heroElement);
     }
     if (featuresElement) {
       observer.observe(featuresElement);
     }
-    const isUserLoggedIn = document.cookie.split(';').some((item) => item.trim().startsWith('authToken='));
-    setIsLoggedIn(isUserLoggedIn);
 
     return () => {
       if (heroElement) {
@@ -40,59 +37,11 @@ export default function InternshipPortal() {
         observer.unobserve(featuresElement);
       }
     };
-  }, []);  
-
-  const handleLogout = async(e) => {
-    e.preventDefault();
-    const url = "http://localhost:5000/auth/logout";
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        credentials: "include",
-      });
-      const jsonresponse = await response.json();
-      if (response.ok) {
-        console.log("Success: ", jsonresponse);
-        alert("You are now Logged out!");
-      } else {
-        console.log("Error: ", jsonresponse);
-        alert(jsonresponse.message || "Something went wrong");
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-      alert("An error occurred. Please try again later.");
-    }
-    setIsLoggedIn(false);
-    navigate('/');
-  };
+  }, []);
 
   return (
     <div className="internship-portal">
-      <header className="header">
-        <div className="logo">PDEU Internships</div>
-        <nav>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/internships">Internships</a></li>
-            <li><a href="/contact">Contact</a></li>
-            {isLoggedIn ? (
-              <>
-                <li><Link to="/account" className="nav-button">My Account</Link></li>
-                <li><Link onClick={handleLogout} className="nav-button logout-button">Logout</Link></li>
-              </>
-            ) : (
-              <>
-                <li><Link to="/login" className="nav-button">Login</Link></li>
-                <li><Link to="/signup" className="nav-button">Sign Up</Link></li>
-              </>
-            )}
-          </ul>
-        </nav>
-      </header>
+      <Navbar />
 
       <main>
         <section ref={heroRef} className="hero">
