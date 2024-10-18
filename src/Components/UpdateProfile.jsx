@@ -27,11 +27,10 @@ export default function UpdateProfile() {
           credentials: 'include',
         });
         const data = await res.json();
-        if (data.error) {
+        if (!res.ok) {
           navigate('/login'); 
         } else {
           const userProfile = data; 
-          console.log(data)
           setUserType(data.role); 
           setFormData({
             name: userProfile.name || '',
@@ -75,7 +74,7 @@ export default function UpdateProfile() {
       });
 
       const data = await res.json();
-      if (data.error) {
+      if (!res.ok) {
         console.error('Error updating profile:', data.error);
       } else {
         alert('Profile updated successfully!');

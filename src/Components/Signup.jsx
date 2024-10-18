@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import "../Styles/Auth.css";
@@ -16,6 +16,16 @@ export default function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const isUserLoggedIn = document.cookie
+      .split(";")
+      .some((item) => item.trim().startsWith("authToken="));
+
+    if (isUserLoggedIn) {
+      navigate("/"); 
+    }
+  }, [navigate]);
 
   async function sendposturl() {
     const url = "http://localhost:5000/auth/register";
