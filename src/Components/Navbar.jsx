@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-
   useEffect(() => {
     const isUserLoggedIn = document.cookie.split(';').some((item) => item.trim().startsWith('authToken='));
     setIsLoggedIn(isUserLoggedIn);
@@ -34,8 +33,11 @@ const Navbar = () => {
       alert("An error occurred. Please try again later.");
     }
   };
-
+  // clearTimeout(id)
+  // console.log(loggedSucc +"bhi")
+  // console.log(loggedSucc)
   return (
+    <>
     <header className="header">
       <div className="logo">PDEU Internships</div>
       <nav>
@@ -58,6 +60,7 @@ const Navbar = () => {
         </ul>
       </nav>
     </header>
+    </>
   );
 };
 

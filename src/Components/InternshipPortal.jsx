@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef,useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import '../Styles/LandingPage.css';
@@ -6,6 +6,28 @@ import '../Styles/LandingPage.css';
 export default function InternshipPortal() {
   const heroRef = useRef(null);
   const featuresRef = useRef(null);
+  const [loggedSucc,setloggedSucc]=useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let notfirsttime=localStorage.getItem("notfirsttime");
+  useEffect(() => {
+    const isUserLoggedIn = document.cookie.split(';').some((item) => item.trim().startsWith('authToken='));
+    setIsLoggedIn(isUserLoggedIn);
+  }, []);
+
+  useEffect(() => {
+      if(!notfirsttime && isLoggedIn){//If logs in first time then only simulate the logged in div otherwise not.
+      setloggedSucc(true)
+      const timeoutId=setTimeout(()=>{
+        // console.log("true"+" "+loggedSucc)
+        setloggedSucc(false);
+        console.log(loggedSucc +"hi")
+        localStorage.setItem("notfirsttime","true");
+      },1000)
+
+      // Cleanup function to clear timeout on unmount
+      return () => clearTimeout(timeoutId);
+    }
+    }, []);
 
   useEffect(() => {
     const heroElement = heroRef.current;
@@ -39,9 +61,18 @@ export default function InternshipPortal() {
     };
   }, []);
 
+  // useEffect(() => {
+  //   const timeoutId=setTimeout(()=>{
+  //     // console.log("true"+" "+loggedSucc)
+  //     setloggedSucc(!loggedSucc);
+  //     console.log(loggedSucc)
+  //   },1000)
+  //   // Cleanup function to clear timeout on unmount
+  //   return () => clearTimeout(timeoutId);
+  // }, []);
   return (
     <div className="internship-portal">
-      <Navbar />
+      {loggedSucc && isLoggedIn ? <div className="header" style={{backgroundColor: "white",color:'black',textAlign:'center'}}>Logged In!</div> :<Navbar />}
 
       <main>
         <section ref={heroRef} className="hero">
