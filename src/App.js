@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { LoadingProvider } from './Components/Loading/LoadingContext';
 import InternshipPortal from './Components/InternshipPortal';
 import Login from './Components/Login';
 import Signup from './Components/Signup';
@@ -11,6 +12,7 @@ import UpdateProfile from './Components/UpdateProfile';
 
 function App() {
   return (
+    <LoadingProvider> 
     <Router>
       <Routes>
         <Route path="/" element={<InternshipPortal />} />
@@ -23,6 +25,7 @@ function App() {
         <Route path="/updateprofile" element={<UpdateProfile />} />
       </Routes>
     </Router>
+    </LoadingProvider>
   );
 }
 
