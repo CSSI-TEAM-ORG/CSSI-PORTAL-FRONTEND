@@ -9,6 +9,7 @@ import About from './Components/About';
 import Internships from './Components/Internships';
 import Contact from './Components/Contact';
 import UpdateProfile from './Components/UpdateProfile';
+import NotFound from './Components/NotFound';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/internships" element={<Internships />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/updateprofile" element={<UpdateProfile />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>
     </LoadingProvider>
