@@ -61,15 +61,6 @@ export default function InternshipPortal() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const timeoutId=setTimeout(()=>{
-  //     // console.log("true"+" "+loggedSucc)
-  //     setloggedSucc(!loggedSucc);
-  //     console.log(loggedSucc)
-  //   },1000)
-  //   // Cleanup function to clear timeout on unmount
-  //   return () => clearTimeout(timeoutId);
-  // }, []);
   return (
     <div className="internship-portal">
       {loggedSucc && isLoggedIn ? <div className="header" style={{backgroundColor: "white",color:'black',textAlign:'center'}}>Logged In!</div> :<Navbar />}

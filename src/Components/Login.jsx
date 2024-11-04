@@ -69,6 +69,7 @@ export default function Login() {
               <option value="student">Student</option>
               <option value="faculty">Faculty</option>
               <option value="ngo">NGO</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
           <div className="form-group">

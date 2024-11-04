@@ -33,9 +33,7 @@ const Navbar = () => {
       alert("An error occurred. Please try again later.");
     }
   };
-  // clearTimeout(id)
-  // console.log(loggedSucc +"bhi")
-  // console.log(loggedSucc)
+
   return (
     <>
     <header className="header">

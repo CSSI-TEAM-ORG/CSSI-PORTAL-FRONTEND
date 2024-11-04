@@ -8,6 +8,7 @@ import About from './Components/About';
 import Internships from './Components/Internships';
 import Contact from './Components/Contact';
 import UpdateProfile from './Components/UpdateProfile';
+import Admin from './Components/admin/dashboard';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/internships" element={<Internships />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/updateprofile" element={<UpdateProfile />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>
   );
