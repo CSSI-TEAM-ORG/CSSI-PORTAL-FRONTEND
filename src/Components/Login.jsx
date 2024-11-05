@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import "../Styles/Auth.css";
+import LoadingComponent from "./Loading/LoadingComponent";
+import { useLoading } from './Loading/LoadingContext';
 
 export default function Login() {
+  const { isLoading, setIsLoading } = useLoading();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("student");
@@ -29,7 +32,7 @@ export default function Login() {
       password,
       role: userType,
     };
-
+    setIsLoading(true);
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -51,8 +54,13 @@ export default function Login() {
       console.log("Error: ", error);
       setError("An error occurred. Please try again later.");
     }
+    finally{
+      setIsLoading(false);
+    }
   }
-
+  if (isLoading) {
+    return <LoadingComponent />;
+  }
   return (
     <div className="auth-container">
       <div className="auth-card">

@@ -6,6 +6,11 @@ import '../Styles/AccountPage.css';
 export default function AccountPage() {
   const [userType, setUserType] = useState('');
   const [userData, setUserData] = useState({});
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordChangeMessage, setPasswordChangeMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,12 +36,43 @@ export default function AccountPage() {
     fetchUserData();
   }, [navigate]);
 
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      setPasswordChangeMessage('New passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/auth/changePassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ old_password: oldPassword, new_password: newPassword }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      setPasswordChangeMessage(data.message);
+
+      if (response.ok) {
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+        setShowPasswordForm(false);
+      }
+    } catch (error) {
+      console.error('Error changing password:', error);
+      setPasswordChangeMessage('An error occurred while changing the password');
+    }
+  };
+
   if (!userType) {
     return <p>Loading...</p>;
   }
 
   return (
-    
     <div className="account-page">
       <Navbar/>
       <header className="account-header">
@@ -132,7 +168,54 @@ export default function AccountPage() {
           <p>Loading user data...</p>
         )}
 
-        <button className="update-profile-button" onClick={() => navigate('/updateprofile')}>Update Profile</button>
+        <div className="button-container">
+          <button className="update-profile-button" onClick={() => navigate('/updateprofile')}>Update Profile</button>
+          <button className="change-password-button" onClick={() => setShowPasswordForm(!showPasswordForm)}>
+            {showPasswordForm ? 'Hide Password Form' : 'Change Password'}
+          </button>
+        </div>
+
+        {showPasswordForm && (
+          <form onSubmit={handlePasswordChange} className="password-form">
+            <div className="form-group">
+              <label htmlFor="oldPassword">Old Password:</label>
+              <input
+                type="password"
+                id="oldPassword"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="newPassword">New Password:</label>
+              <input
+                type="password"
+                id="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm New Password:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="submit-password-button">Change Password</button>
+          </form>
+        )}
+
+        {passwordChangeMessage && (
+          <div className="password-change-message">
+            {passwordChangeMessage}
+          </div>
+        )}
       </div>
     </div>
   );

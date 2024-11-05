@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLoading } from './Loading/LoadingContext';
+import LoadingComponent from "./Loading/LoadingComponent";
 import { Eye, EyeOff } from "lucide-react";
 import "../Styles/Auth.css";
 
 export default function Signup() {
+  const { isLoading, setIsLoading } = useLoading();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +40,7 @@ export default function Signup() {
       password,
       confirm_password,
     };
-
+    setIsLoading(true);
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -59,6 +62,9 @@ export default function Signup() {
     } catch (error) {
       console.log("Error: ", error);
       setError("An error occurred. Please try again later.");
+    }
+    finally{
+      setIsLoading(false);
     }
   }
 
@@ -85,7 +91,9 @@ export default function Signup() {
     }
     sendposturl();
   };
-
+  if (isLoading) {
+    return <LoadingComponent />;
+  }
   return (
     <div className="auth-container">
       <div className="auth-card">

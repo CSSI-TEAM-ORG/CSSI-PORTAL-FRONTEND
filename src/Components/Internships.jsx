@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'
 import '../Styles/Internships.css';
-
+import LoadingComponent from './Loading/LoadingComponent';
+import { useLoading } from './Loading/LoadingContext';
 export default function Internships() {
+  const { isLoading, setIsLoading } = useLoading();
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();  
 
   useEffect(() => {
+    setIsLoading(true);
     fetch('http://localhost:5000/ngo/allData', {
       method: 'GET',
       credentials: 'include',  
@@ -25,16 +27,16 @@ export default function Internships() {
       })
       .then((data) => {
         setData(data);
-        setLoading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
         setError(error.message);
-        setLoading(false);
+        setIsLoading(false);
       });
   }, [navigate]);  
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return <LoadingComponent />;
   }
 
   if (error) {
