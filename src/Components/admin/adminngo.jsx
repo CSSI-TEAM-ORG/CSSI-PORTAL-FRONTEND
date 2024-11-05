@@ -5,7 +5,6 @@ import axios from "axios"
 export default function ANgo(){
     const [data,setData]=useState(null);
     const[loading,setLoading]=useState(true);
-    const[searchBy,setSearchBy]=useState('');
     const navigate=useNavigate()
     let name=useRef('');
     useEffect(() => {
@@ -36,15 +35,13 @@ export default function ANgo(){
         event.preventDefault();
         try{
           // setLoading(true)
-        const response=await axios.get("http://localhost:5000/admin/getNGO",{withCredentials:true,params:{
+        const response=await axios.get("http://localhost:5000/admin/searchNGO",{withCredentials:true,params:{
           data:name.current.value,
-          searchBy:searchBy
         }})
         // setLoading(false)
         console.log(response.data)
         setData(response.data)
         name.current.value=''
-        setSearchBy('')
         }
         catch(err){
           console.log(err)
@@ -52,8 +49,11 @@ export default function ANgo(){
       } 
       async function handleDelete(id){
         try{
-        const response=await axios.post("http://localhost:5000/deleteSFN",{id:id,role:"NGO"},{withCredentials:true})
+        const response=await axios.post("http://localhost:5000/admin/deleteUser",{user_id:id,user_type:"NGO"},{withCredentials:true})
         console.log(response)
+        const response1=await axios.get("http://localhost:5000/admin/getNGO",{withCredentials:true})
+        console.log(response1.data)
+        setData(response.data)
         }
         catch(err){
           console.log(err)
@@ -64,12 +64,6 @@ export default function ANgo(){
         <div className="form-group">
           <label for="exampleInputEmail1">Search NGO</label>
           <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search NGO " ref={name}/>
-          <br></br>
-          <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-secondary" onClick={()=>{setSearchBy('area')}}>Area</button>
-          <button type="button" class="btn btn-secondary" onClick={()=>{setSearchBy('name')}}>Name</button>
-          <button type="button" class="btn btn-secondary" onClick={()=>{setSearchBy('state');console.log(searchBy)}}>State</button>
-          </div>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>

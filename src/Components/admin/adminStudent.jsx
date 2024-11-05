@@ -6,7 +6,6 @@ export default function AStudent(){
     const navigate=useNavigate()
     const [data,setdata]=useState(null)
     const[loading,setLoading]=useState(true)
-    const[searchBy,setSearchBy]=useState('')
     let name=useRef('')
     useEffect(() => {
         fetch('http://localhost:5000/admin/getStudent', {
@@ -34,18 +33,20 @@ export default function AStudent(){
       }, [navigate]); 
     async function handleSubmit(event){
       event.preventDefault()
-      const response=await axios.get("http://localhost:5000/getStudent",{withCredentials:true,params:{
+      const response=await axios.get("http://localhost:5000/admin/searchStudent",{withCredentials:true,params:{
         data:name.current.value,
-        searchBy:searchBy
       }})
-      console.log(response.json())
+      console.log(response.data)
+      setdata(response.data)
       name.current.value=''
-      setSearchBy('')
     }
     async function handleDelete(id){
       try{
-      const response=await axios.post("http://localhost:5000/deleteSFN",{id:id,role:"student"},{withCredentials:true})
+      const response=await axios.post("http://localhost:5000/admin/deleteUser",{user_id:id,user_type:"student"},{withCredentials:true})
       console.log(response)
+      const response1=await axios.get("http://localhost:5000/admin/getStudent",{withCredentials:true})
+        console.log(response1.data)
+        setdata(response.data)
       }
       catch(err){
         console.log(err)
@@ -56,11 +57,6 @@ export default function AStudent(){
         <div className="form-group">
           <label for="exampleInputEmail1">Search Student</label>
           <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Student " ref={name} />
-          <br></br>
-          <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-secondary" onClick={()=>{setSearchBy('name')}}>Name</button>
-          <button type="button" class="btn btn-secondary" onClick={()=>{setSearchBy('email')}}>Email</button>
-          </div>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>

@@ -6,7 +6,6 @@ export default function AFaculty(){
     const navigate=useNavigate()
     const [data,setData]=useState(null)
     const[loading,setLoading]=useState(true)
-    const[searchBy,setSearchBy]=useState('')
     let name=useRef('')
     useEffect(() => {
         fetch('http://localhost:5000/admin/getFaculty', {
@@ -32,20 +31,23 @@ export default function AFaculty(){
             setLoading(false);
           });
       }, [navigate]); 
+
       async function handleSubmit(event){
         event.preventDefault()
-        const response=await axios.get("http://localhost:5000/getFaculty",{withCredentials:true,params:{
-          data:name.current.value,
-          searchBy:searchBy
+        const response=await axios.get("http://localhost:5000/admin/searchFaculty",{withCredentials:true,params:{
+          data:name.current.value
         }})
-        console.log(response.json())
+        console.log(response.data)
+        setData(response.data)
         name.current.value=''
-        setSearchBy('')
       }
       async function handleDelete(id){
         try{
-        const response=await axios.post("http://localhost:5000/deleteSFN",{id:id,role:"faculty"},{withCredentials:true})
+        const response=await axios.post("http://localhost:5000/admin/deleteUser",{user_id:id,user_type:"faculty"},{withCredentials:true})
         console.log(response)
+        const response1=await axios.get("http://localhost:5000/admin/getFaculty",{withCredentials:true})
+        console.log(response1.data)
+        setData(response.data)
         }
         catch(err){
           console.log(err)
@@ -56,11 +58,6 @@ export default function AFaculty(){
       <div className="form-group">
         <label for="exampleInputEmail1">Search Faculty</label>
         <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Faculty " ref={name} />
-        <br></br>
-        <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary" onClick={()=>{setSearchBy('name')}}>Name</button>
-        <button type="button" class="btn btn-secondary" onClick={()=>{setSearchBy('email')}}>Email</button>
-        </div>
       </div>
       <button type="submit" className="btn btn-primary">Submit</button>
     </form>
