@@ -119,6 +119,7 @@ export default function ANgo(){
         }
         catch(err){
           console.log(err.stack)
+          alert(err.response.data.message)
         }
       }
     return(
