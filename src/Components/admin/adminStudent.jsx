@@ -7,6 +7,13 @@ export default function AStudent(){
     const [data,setdata]=useState(null)
     const[loading,setLoading]=useState(true)
     let name=useRef('')
+    let Name=useRef('')
+    let rollno=useRef('')
+    let department=useRef('')
+    let email=useRef('')
+    let password=useRef('')
+    let confirm_password=useRef('')
+    const[addS,setAdd]=useState(false)
     useEffect(() => {
         fetch('http://localhost:5000/admin/getStudent', {
           method: 'GET',
@@ -46,14 +53,78 @@ export default function AStudent(){
       console.log(response)
       const response1=await axios.get("http://localhost:5000/admin/getStudent",{withCredentials:true})
         console.log(response1.data)
-        setdata(response.data)
+        setdata(response1.data)
       }
       catch(err){
         console.log(err)
       }
     }
+    function handleClick(){
+      // console.log(addS)
+      setAdd(true)
+      // console.log(addS)
+    }
+    async function handlesubmit(event){
+      event.preventDefault();
+      const data={
+        name:Name.current.value,
+        email:email.current.value,
+        rollno:rollno.current.value,
+        department:department.current.value,
+        password:password.current.value,
+        confirm_password:confirm_password.current.value
+      }
+      try{
+      const response=await axios.post("http://localhost:5000/admin/addStudent",{data:data},{withCredentials:true})
+      if(response.status===201){
+        Name.current.value=''
+        email.current.value=''
+        rollno.current.value=''
+        department.current.value=''
+        password.current.value=''
+        confirm_password.current.value=''
+        try{
+          const response =await axios.get("http://localhost:5000/admin/getStudent",{withCredentials:true})
+          if(response.status===200){
+            setdata(response.data)
+          }
+          else{
+            console.log("error")
+          }
+        }
+        catch(err){
+            console.log(err.stack)
+        }
+        setAdd(false)
+      }
+      else{
+        console.log("error")
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
+    }
     return (
-        <><form onSubmit={handleSubmit}>
+        <>{addS ?<><form onSubmit={handlesubmit}>
+        <div className="form-group">
+          <label for="exampleInputEmail1">Name:</label>
+          <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Name:  " ref={Name} />
+          <label for="exampleInputEmail1">Email:</label>
+          <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your email:  " ref={email} />
+          <label for="exampleInputEmail1">rollno:</label>
+          <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your rollNo:  " ref={rollno} />
+          <label for="exampleInputEmail1">Department:</label>
+          <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Department:  " ref={department} />
+          <label for="exampleInputEmail1">Password:</label>
+          <input type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Password:  " ref={password} />
+          <label for="exampleInputEmail1">Confirm Password: </label>
+          <input type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Confirm your password " ref={confirm_password} />
+        </div>
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </form></>
+       : <>
+        <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label for="exampleInputEmail1">Search Student</label>
           <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Student " ref={name} />
@@ -61,7 +132,9 @@ export default function AStudent(){
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
       <br />
-      {loading? <div>Loading...</div>: 
+      <button onClick={handleClick} className="btn btn-secondary">Add Student</button>
+      {
+      loading? <div>Loading...</div>:
       data?.map((value)=>(
         <div key={value.id}  className="card" style={{width: "18rem"}}>
   <div class="card-body">
@@ -72,6 +145,7 @@ export default function AStudent(){
     <MdDelete onClick={()=>handleDelete(value.id)}/>
   </div>
 </div>
-      ))}</>
+      ))
+      }</>}</>
     )
 }

@@ -6,7 +6,16 @@ export default function ANgo(){
     const [data,setData]=useState(null);
     const[loading,setLoading]=useState(true);
     const navigate=useNavigate()
+    const[addN,setAdd]=useState(false)
     let name=useRef('');
+    let Name=useRef('');
+    let email=useRef('');
+    let password=useRef('');
+    let confirm_password=useRef('');
+    let state=useRef('');
+    let city=useRef('');
+    let address=useRef('');
+    let capacity=useRef(0);
     useEffect(() => {
         fetch('http://localhost:5000/admin/getNGO', {//To search and retrieve data of NGOS
           method: 'GET',
@@ -51,16 +60,90 @@ export default function ANgo(){
         try{
         const response=await axios.post("http://localhost:5000/admin/deleteUser",{user_id:id,user_type:"NGO"},{withCredentials:true})
         console.log(response)
-        const response1=await axios.get("http://localhost:5000/admin/getNGO",{withCredentials:true})
-        console.log(response1.data)
-        setData(response.data)
         }
         catch(err){
           console.log(err)
         }
+        try{
+          const response1=await axios.get("http://localhost:5000/admin/getNGO",{withCredentials:true})
+          console.log(response1.data)
+          setData(response1.data)
+        }
+        catch(err){
+          console.log(err.stack)
+        }
+      }
+      function handleClick(){
+        setAdd(true);
+      }
+      async function handlesubmit(event){
+        event.preventDefault()
+        const data={
+          name:Name.current.value,
+          email:email.current.value,
+          capacity:capacity.current.value,
+          city:city.current.value,
+          state:state.current.value,
+          address:address.current.value,
+          password:password.current.value,
+          confirm_password:confirm_password.current.value
+        }
+        try{
+          const response=await axios.post("http://localhost:5000/admin/addNGO",{data:data},{withCredentials:true});
+          if(response.status===201){
+          Name.current.value=''
+          email.current.value=''
+          capacity.current.value=''
+          city.current.value=''
+          state.current.value=''
+          address.current.value=''
+          password.current.value=''
+          confirm_password.current.value=''
+          try{
+            const response =await axios.get("http://localhost:5000/admin/getNGO",{withCredentials:true})
+            if(response.status===200){
+              setData(response.data)
+            }
+            else{
+              console.log("error")
+            }
+          }
+          catch(err){
+              console.log(err.stack)
+          }
+          setAdd(false)
+          }
+          else{
+            console.log("error")
+          }
+        }
+        catch(err){
+          console.log(err.stack)
+        }
       }
     return(
-        <><form onSubmit={handleSubmit}>
+        <>{addN? <><form onSubmit={handlesubmit}>
+        <div className="form-group">
+          <label for="exampleInputEmail1">Name:</label>
+          <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter NGO:  " ref={Name} />
+          <label for="exampleInputEmail1">Email:</label>
+          <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter NGO email:  " ref={email} />
+          <label for="exampleInputEmail1">Capacity:</label>
+          <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter NGO Caparity:  " ref={capacity} />
+          <label for="exampleInputEmail1">City:</label>
+          <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter NGO city:  " ref={city} />
+          <label for="exampleInputEmail1">State</label>
+          <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter NGO state:  " ref={state} />
+          <label for="exampleInputEmail1">Address:</label>
+          <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter NGO address:  " ref={address} />
+          <label for="exampleInputEmail1">Password:</label>
+          <input type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Password:  " ref={password} />
+          <label for="exampleInputEmail1">Confirm Password: </label>
+          <input type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Confirm your password " ref={confirm_password} />
+        </div>
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </form></>
+        : <><form onSubmit={handleSubmit}>
         <div className="form-group">
           <label for="exampleInputEmail1">Search NGO</label>
           <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search NGO " ref={name}/>
@@ -68,6 +151,7 @@ export default function ANgo(){
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
       <br />
+      <button onClick={handleClick} className="btn btn-secondary">Add NGO</button>
       {loading? <div>Loading...</div>: 
       data?.map((value)=>(
         <div class="card" style={{width: "18rem"}}>
@@ -81,7 +165,7 @@ export default function ANgo(){
     <MdDelete onClick={()=>handleDelete(value.id)}/>
   </div>
 </div>
-      ))}
+      ))}</>}
       </>
     )
 }
