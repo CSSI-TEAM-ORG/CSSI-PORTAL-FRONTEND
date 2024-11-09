@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoading } from './Loading/LoadingContext';
+import { useLoading } from "./Loading/LoadingContext";
 import LoadingComponent from "./Loading/LoadingComponent";
 import { Eye, EyeOff } from "lucide-react";
 import "../Styles/Auth.css";
@@ -9,11 +9,13 @@ export default function Signup() {
   const { isLoading, setIsLoading } = useLoading();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [address, setAddress] = useState("");
+  const [capacity, setCapacity] = useState("");
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirm_Password] = useState("");
-  const [userType, setUserType] = useState("student");
-  const [department, setDepartment] = useState("");
-  const [rollno, setRollNo] = useState("");
+  const [userType, setUserType] = useState("NGO");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -26,7 +28,7 @@ export default function Signup() {
       .some((item) => item.trim().startsWith("authToken="));
 
     if (isUserLoggedIn) {
-      navigate("/"); 
+      navigate("/");
     }
   }, [navigate]);
 
@@ -34,8 +36,10 @@ export default function Signup() {
     const url = "http://localhost:5000/auth/register";
     const data = {
       name,
-      rollno,
-      department,
+      capacity,
+      state,
+      city,
+      address,
       email,
       password,
       confirm_password,
@@ -62,8 +66,7 @@ export default function Signup() {
     } catch (error) {
       console.log("Error: ", error);
       setError("An error occurred. Please try again later.");
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   }
@@ -71,11 +74,6 @@ export default function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-
-    if (!email.endsWith("pdpu.ac.in")) {
-      setError("Please use a valid PDEU email address");
-      return;
-    }
 
     const strongPasswordPattern =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -107,11 +105,11 @@ export default function Signup() {
               onChange={(e) => setUserType(e.target.value)}
               className="auth-select"
             >
-              <option value="student">Student</option>
+              <option value="student">NGO</option>
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="name">Full Name of NGO</label>
             <input
               type="text"
               id="name"
@@ -121,34 +119,53 @@ export default function Signup() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="RollNo">Roll Number:</label>
+            <label htmlFor="State">State:</label>
             <input
               type="text"
-              id="RollNo"
-              value={rollno}
-              onChange={(e) => setRollNo(e.target.value)}
+              id="State"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="department">Department</label>
+            <label htmlFor="city">City</label>
             <input
               type="text"
               id="department"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email">PDEU Email</label>
+            <label htmlFor="address">Address:</label>
+            <input
+              type="text"
+              id="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="capacity">Capacity:</label>
+            <input
+              type="text"
+              id="capacity"
+              value={capacity}
+              onChange={(e) => setCapacity(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="ends with pdpu.ac.in"
             />
           </div>
           <div className="form-group">
