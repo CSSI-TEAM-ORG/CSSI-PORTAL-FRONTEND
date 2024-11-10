@@ -6,7 +6,7 @@ import AStudent from "./adminStudent";
 import { Link } from "react-router-dom";
 import "../../Styles/admin.css"
 import { useState } from "react";
-
+import Triggerquery from "./triggerquery"
 export default function Admin() {
     const [role, setRole] = useState('student');
 
@@ -16,6 +16,11 @@ export default function Admin() {
         }
         if (role === "faculty") {
             return <AFaculty />;
+        }
+        if(role==="triggerquery"){
+            return (
+                <Triggerquery />
+            )
         }
         return <ANgo />;
     }
@@ -43,6 +48,11 @@ export default function Admin() {
                         <li>
                             <Link to="#" onClick={() => setRole('faculty')} className={role === "faculty" ? "active" : ""}>
                                 Faculty
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="#" onClick={() => setRole('triggerquery')} className={role === "triggerquery" ? "active" : ""}>
+                                TriggerQuery
                             </Link>
                         </li>
                     </ul>

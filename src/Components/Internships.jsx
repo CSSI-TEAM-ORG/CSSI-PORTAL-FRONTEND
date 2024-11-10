@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'
+import axios from "axios"
+//To add popup confirm button here which loads when user applies for internship
 import '../Styles/Internships.css';
 import LoadingComponent from './Loading/LoadingComponent';
 import { useLoading } from './Loading/LoadingContext';
@@ -43,6 +45,26 @@ export default function Internships() {
     return <div>Error: {error}</div>;
   }
 
+  async function handleClick(internship){
+    try{
+    const response=await axios.post("http://localhost:5000/ngo/applyNGO",{internship},{withCredentials:true})
+    if(response.status===200){
+      alert("your application was successfully received and is in process. Your progress will be updated once the conformation from NGO is received.")
+    }
+    else{
+      alert("your application was not successfully received.")
+    }
+    }
+    catch(err){
+      if(err.response.status===400){
+        alert(err.response.data.message)
+      }
+      else if(err.response.status===401){
+        alert("Unauthorized!!")
+      }
+      console.log(err.stack)
+    }
+  }
   return (
     <div className="internships-page">
       <Navbar />
@@ -59,7 +81,7 @@ export default function Internships() {
                 <p><strong>Location:</strong> {internship.city}, {internship.state}</p>
                 <p><strong>Address:</strong> {internship.address}</p>
                 <p><strong>Email:</strong> {internship.email}</p>
-                <button className="apply-button">Apply Now</button>
+                <button onClick={()=>{handleClick(internship)}} className="apply-button">Apply Now</button>
               </div>
             ))
           ) : (

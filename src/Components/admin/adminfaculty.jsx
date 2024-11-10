@@ -123,6 +123,7 @@ export default function AFaculty() {
                         <input type="password" id="confirm_password" placeholder="Confirm your password" ref={confirm_password} />
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
+                    <button  style={{marginLeft:'20px'}} onClick={()=>setAdd(false)} className="btn btn-warning">Go Back</button>
                 </form>
             ) : (
                 <>
