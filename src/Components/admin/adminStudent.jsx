@@ -140,6 +140,7 @@ export default function AStudent(){
       <button onClick={handleClick} className="btn btn-secondary">Add Student</button>
       {
       loading? <LoadingComponent />:
+      <div className="card-grid">
       data?.map((value)=>(
         <div key={value.id}  className="card" style={{width: "18rem"}}>
   <div class="card-body">
@@ -151,6 +152,7 @@ export default function AStudent(){
   </div>
 </div>
       ))
+          </div>
       }</>}</>
     )
 }
