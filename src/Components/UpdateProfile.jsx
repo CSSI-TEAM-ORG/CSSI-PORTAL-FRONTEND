@@ -10,7 +10,6 @@ export default function UpdateProfile() {
     email: '',
     department: '',
     rollno: '',
-    internshipAt: '',
     facultyCoordinator: '',
     evaluator: '',
     capacity: '',
@@ -37,7 +36,6 @@ export default function UpdateProfile() {
             email: userProfile.email || '',
             department: userProfile.department || '',
             rollno: userProfile.rollno || '',
-            internshipAt: userProfile.NGO || '',
             facultyCoordinator: userProfile.Faculty_Coordinator || '',
             evaluator: userProfile.Evaluator || '',
             capacity: userProfile.capacity || '',
@@ -55,6 +53,7 @@ export default function UpdateProfile() {
   }, [navigate]);
 
   const handleChange = (e) => {
+    console.log(e.target)
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -118,40 +117,10 @@ export default function UpdateProfile() {
               <label>Roll No</label>
               <input
                 type="text"
-                name="rollNo"
+                name="rollno"
                 value={formData.rollno}
                 onChange={handleChange}
                 required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Internship At (NGO)</label>
-              <input
-                type="text"
-                name="internshipAt"
-                value={formData.internshipAt}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Faculty Coordinator</label>
-              <input
-                type="text"
-                name="facultyCoordinator"
-                value={formData.facultyCoordinator}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Evaluator</label>
-              <input
-                type="text"
-                name="evaluator"
-                value={formData.evaluator}
-                onChange={handleChange}
               />
             </div>
           </>
