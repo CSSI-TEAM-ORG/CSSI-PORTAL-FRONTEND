@@ -228,7 +228,7 @@ nav ul li a:hover {
 }
 
 .footer {
-  background-color: var(--secondary-color);
+  background-color: var(background-color);
   color: var(--text-color);
   padding: 60px 5% 20px;
 }
