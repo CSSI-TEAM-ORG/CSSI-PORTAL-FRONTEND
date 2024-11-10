@@ -152,7 +152,7 @@ export default function AStudent(){
   </div>
 </div>
       ))
-    }</div>
+      }</div>
       }</>}</>
     )
 }
