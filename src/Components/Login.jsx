@@ -44,8 +44,10 @@ export default function Login() {
       });
       const jsonresponse = await response.json();
       if (response.ok) {
-        alert("You are now Logged in!");
-        navigate("/");
+        if(userType === 'admin'){
+          navigate("/admin");
+        }
+        else navigate("/");
       } else {
         console.log("Error: ", jsonresponse);
         setError(jsonresponse.message || "Something went wrong");

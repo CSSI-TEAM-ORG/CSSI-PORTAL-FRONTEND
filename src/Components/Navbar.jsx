@@ -21,7 +21,6 @@ const Navbar = () => {
       });
       const jsonresponse = await response.json();
       if (response.ok) {
-        alert("You are now Logged out!");
         setIsLoggedIn(false);
         navigate('/');
       } else {

@@ -32,7 +32,6 @@ export default function AccountPage() {
         navigate('/login');
       }
     };
-
     fetchUserData();
   }, [navigate]);
 
@@ -88,6 +87,8 @@ export default function AccountPage() {
             ? 'Faculty Details'
             : userType === 'NGO'
             ? 'NGO Details'
+            : userType === 'admin'
+            ? 'ADMIn Details'
             : navigate('/login')}
         </h2>
 
@@ -164,6 +165,21 @@ export default function AccountPage() {
               <span className="detail-value">{userData.email}</span>
             </div>
           </div>
+        ) : userType === 'admin' ? (
+          <div className="details-grid">
+            <div className="detail-item">
+              <span className="detail-label">Name:</span>
+              <span className="detail-value">{userData.name}</span>
+            </div>
+            <div className="detail-item">
+              <span className="detail-label">Phone:</span>
+              <span className="detail-value">{userData.phone}</span>
+            </div>
+            <div className="detail-item">
+              <span className="detail-label">Email:</span>
+              <span className="detail-value">{userData.email}</span>
+            </div>
+          </div>
         ) : (
           <p>Loading user data...</p>
         )}
@@ -173,6 +189,7 @@ export default function AccountPage() {
           <button className="change-password-button" onClick={() => setShowPasswordForm(!showPasswordForm)}>
             {showPasswordForm ? 'Hide Password Form' : 'Change Password'}
           </button>
+         {userType === "admin" && <button className="update-profile-button" onClick={() => navigate('/admin')}>ADMIN DASHBOARD</button>}
         </div>
 
         {showPasswordForm && (

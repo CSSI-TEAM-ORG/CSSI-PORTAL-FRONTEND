@@ -16,6 +16,7 @@ export default function UpdateProfile() {
     state: '',
     city: '',
     address: '',
+    phone:'',
   });
   const navigate = useNavigate();
 
@@ -42,6 +43,7 @@ export default function UpdateProfile() {
             state: userProfile.state || '',
             city: userProfile.city || '',
             address: userProfile.address || '',
+            phone: userProfile.phone || '',
           });
         }
       } catch (error) {
@@ -53,7 +55,6 @@ export default function UpdateProfile() {
   }, [navigate]);
 
   const handleChange = (e) => {
-    console.log(e.target)
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -133,6 +134,19 @@ export default function UpdateProfile() {
               type="text"
               name="department"
               value={formData.department}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        )}
+
+        {userType === 'admin' && (
+          <div className="form-group">
+            <label>Phone</label>
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
               required
             />

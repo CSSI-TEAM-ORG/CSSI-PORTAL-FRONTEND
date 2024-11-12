@@ -30,7 +30,6 @@ export default function AStudent(){
             return response.json();
           })
           .then((data) => {
-            console.log(data)
             setdata(data);
             setLoading(false);
           })
@@ -44,7 +43,6 @@ export default function AStudent(){
       const response=await axios.get("http://localhost:5000/admin/searchStudent",{withCredentials:true,params:{
         data:name.current.value,
       }})
-      console.log(response.data)
       setdata(response.data)
       name.current.value=''
     }
@@ -53,7 +51,6 @@ export default function AStudent(){
       const response=await axios.post("http://localhost:5000/admin/deleteUser",{user_id:id,user_type:"student"},{withCredentials:true})
       console.log(response)
       const response1=await axios.get("http://localhost:5000/admin/getStudent",{withCredentials:true})
-        console.log(response1.data)
         setdata(response1.data)
       }
       catch(err){
@@ -61,9 +58,7 @@ export default function AStudent(){
       }
     }
     function handleClick(){
-      // console.log(addS)
       setAdd(true)
-      // console.log(addS)
     }
     async function handlesubmit(event){
       event.preventDefault();
@@ -112,17 +107,17 @@ export default function AStudent(){
     return (
         <>{addS ?<><form onSubmit={handlesubmit}>
         <div className="form-group">
-          <label for="exampleInputEmail1">Name:</label>
+          <label htmlFor="exampleInputEmail1">Name:</label>
           <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Name:  " ref={Name} />
-          <label for="exampleInputEmail1">Email:</label>
+          <label htmlFor="exampleInputEmail1">Email:</label>
           <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your email:  " ref={email} />
-          <label for="exampleInputEmail1">rollno:</label>
+          <label htmlFor="exampleInputEmail1">rollno:</label>
           <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your rollNo:  " ref={rollno} />
-          <label for="exampleInputEmail1">Department:</label>
+          <label htmlFor="exampleInputEmail1">Department:</label>
           <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Department:  " ref={department} />
-          <label for="exampleInputEmail1">Password:</label>
+          <label htmlFor="exampleInputEmail1">Password:</label>
           <input type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Password:  " ref={password} />
-          <label for="exampleInputEmail1">Confirm Password: </label>
+          <label htmlFor="exampleInputEmail1">Confirm Password: </label>
           <input type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Confirm your password " ref={confirm_password} />
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
@@ -131,7 +126,7 @@ export default function AStudent(){
        : <>
         <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label for="exampleInputEmail1">Search Student</label>
+          <label htmlFor="exampleInputEmail1">Search Student</label>
           <input type="textbox" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Student " ref={name} />
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
@@ -143,11 +138,11 @@ export default function AStudent(){
       <div className="card-grid">{
       data?.map((value)=>(
         <div key={value.id}  className="card" style={{width: "18rem"}}>
-  <div class="card-body">
-    <h5 class="card-title">{value.name}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">{value.rollno}</h6>
-    <p class="card-text">{value.NGO}</p>
-    <p class="card-text">{value.Department}</p>
+  <div className="card-body">
+    <h5 className="card-title">{value.name}</h5>
+    <h6 className="card-subtitle mb-2 text-muted">{value.rollno}</h6>
+    <p className="card-text">{value.NGO}</p>
+    <p className="card-text">{value.Department}</p>
     <MdDelete onClick={()=>handleDelete(value.id)}/>
   </div>
 </div>
